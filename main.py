@@ -54,12 +54,10 @@ async def connect_hub(request):
 
 async def send_command(request):
     client = await get_client()
+    device = request.match_info["id_device"]
+    command = request.match_info["command"].replace("&&", "/").replace("!!", "?")
     if client is not None:
-        send_command_args = SendCommandDevice(
-            device=request.match_info["id_device"],
-            command=request.match_info["command"],
-            delay=0,
-        )
+        send_command_args = SendCommandDevice(device=device, command=command, delay=0,)
         res = await client.send_commands(send_command_args)
         if res:
             return web.json_response(

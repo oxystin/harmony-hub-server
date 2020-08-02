@@ -37,7 +37,8 @@ Harmony HUB
                             </div>
                             <div class="card-body">
                                 {% for command in commands['commands'] %}
-                                    <a href="./device/command/{{ Devices[device]['id'] }}/{{ command }}" class="badge badge-light font-weight-light">{{ command }}</a>
+                                    {% set com_rep = command | replace('/','&&') | replace('?','!!') %}
+                                    <a href="./device/command/{{ Devices[device]['id'] }}/{{ com_rep }}" class="badge badge-light font-weight-light">{{ command }}</a>
                                 {% endfor %}
                             </div>
                         </div> 
