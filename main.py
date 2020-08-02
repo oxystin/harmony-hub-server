@@ -7,6 +7,7 @@ import os
 
 HUB_IP = os.environ.get("HUB_IP")
 HUB_PROTOCOL = os.environ.get("HUB_PROTOCOL") or "WEBSOCKETS"
+WEB_PORT = os.environ.get("WEB_PORT") or 32670
 
 
 async def get_client():
@@ -88,4 +89,4 @@ app.router.add_get("/", connect_hub)
 app.router.add_get("/device/command/{id_device}/{command}", send_command)
 
 if __name__ == "__main__":
-    web.run_app(app, port=32670)
+    web.run_app(app, port=int(WEB_PORT))
