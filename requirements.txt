@@ -1,0 +1,4 @@
+aioharmony==0.2.6
+aiohttp==3.6.2
+aiohttp-jinja2==1.2.0
+gunicorn==20.0.4

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Harmony HUB
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container mt-5 medium">
+
+    {% if Hub_Info %}
+        <div class="card">
+            <div class="card-header">
+                <b>{{ Hub_Info.name }}</b>
+                <br>
+                <small><b>ID:</b> {{ Hub_Info.id }}</small>
+            </div>
+            <div class="card-body">
+                <small><b>IP :</b> {{ Hub_Info.ip }}</small><br>
+                <small><b>FIRMWARE :</b> {{ Hub_Info.fw }}</small><br>
+                <small><b>PROTOCOL :</b> {{ Hub_Info.protocol }}</small>
+                <br><br>
+
+                {% if Devices %}
+                    <h1 class="display-4">DEVICES:</h1>
+                    {% for device, commands in Devices.items() %}
+                        {% if loop.index > 1 %}
+                            <br>
+                        {% endif %}
+                        <div class="card">
+                            <div class="card-header">
+                                <b>{{ device }}</b> 
+                                <span class="badge badge-pill badge-danger float-right">{{ commands['commands']|length }}</span>
+                                <br>
+                                <small><b>ID:</b> {{ Devices[device]['id'] }}</small>
+                            </div>
+                            <div class="card-body">
+                                {% for command in commands['commands'] %}
+                                    <a href="./device/command/{{ Devices[device]['id'] }}/{{ command }}" class="badge badge-light font-weight-light">{{ command }}</a>
+                                {% endfor %}
+                            </div>
+                        </div> 
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <br>
+
+</div>
+
+{% endblock %}
