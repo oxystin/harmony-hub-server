@@ -82,7 +82,8 @@ aiohttp_jinja2.setup(
         os.path.join(os.path.dirname(__file__), "templates")
     ),
 )
-
+app["static_root_url"] = "/static"
+app.router.add_static("/static", "./static")
 app.router.add_get("/", connect_hub)
 app.router.add_get("/device/command/{id_device}/{command}", send_command)
 
