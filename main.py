@@ -65,6 +65,7 @@ async def send_command(request):
                 delay=0,
             )
             res = await client.send_commands(send_command_args)
+            await client.close()
             if res:
                 return web.json_response(
                     {"status": "Bad Request", "message": res[0].msg}, status=400
