@@ -53,23 +53,37 @@ async def connect_hub(request):
 
 
 async def send_command(request):
-    client = await get_client()
-    device = request.match_info["id_device"]
-    command = request.match_info["command"].replace("&&", "/").replace("!!", "?")
-    if client is not None:
-        send_command_args = SendCommandDevice(device=device, command=command, delay=0,)
-        res = await client.send_commands(send_command_args)
-        if res:
-            return web.json_response(
-                {"status": "Bad Request", "message": res[0].msg}, status=400
+    if request.body_exists:
+        json_data = await request.json()
+        device = json_data.get("id")
+        command = json_data.get("command")
+        client = await get_client()
+        if client is not None:
+            send_command_args = SendCommandDevice(
+                device=device,
+                command=command,
+                delay=0,
             )
+            res = await client.send_commands(send_command_args)
+            if res:
+                return web.json_response(
+                    {"status": "Bad Request", "message": res[0].msg}, status=400
+                )
+            else:
+                return web.json_response(
+                    {"status": "ok", "message": "Command sent successfully"}
+                )
         else:
             return web.json_response(
-                {"status": "ok", "message": "Command sent successfully"}
+                {"status": "ERROR", "message": "HUB not connect"}, status=404
             )
     else:
         return web.json_response(
-            {"status": "ERROR", "message": "HUB not connect"}, status=404
+            {
+                "status": "Bad Request",
+                "message": "It is necessary to transfer the device id and command name in JSON format. Example: {'id': '38213988', 'command': 'Stereo'}",
+            },
+            status=400,
         )
 
 
@@ -85,7 +99,7 @@ aiohttp_jinja2.setup(
 app["static_root_url"] = "/static"
 app.router.add_static("/static", "./static")
 app.router.add_get("/", connect_hub)
-app.router.add_get("/device/command/{id_device}/{command}", send_command)
+app.router.add_post("/command", send_command)
 
 if __name__ == "__main__":
     web.run_app(app, port=int(WEB_PORT))
