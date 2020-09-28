@@ -20,18 +20,10 @@ async def get_client():
     return None
 
 
-async def show_config(client):
-    config = client.config
-    if config:
-        return client.json_config
-    else:
-        return None
-
-
 async def connect_hub(request):
     client = await get_client()
     if client is not None:
-        config = await show_config(client)
+        config = client.json_config
         hub_info = {
             "Hub_Info": {
                 "name": client.name,

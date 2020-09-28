@@ -1,54 +1,70 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-Harmony HUB
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ static('img/favicon.png') }}">
+    <title> Harmony HUB </title>
 
+    <style>
+        {% include 'style.css' %}
+    </style>
+</head>
 
-{% block body %}
+<body>
 
-<div class="container mt-5 medium">
+    <div id="notification"></div>
 
-    {% if Hub_Info %}
-        <div class="card">
-            <div class="card-header">
-                <b>{{ Hub_Info.name }}</b>
-                <br>
-                <small><b>ID:</b> {{ Hub_Info.id }}</small>
-            </div>
-            <div class="card-body">
-                <small><b>IP :</b> {{ Hub_Info.ip }}</small><br>
-                <small><b>FIRMWARE :</b> {{ Hub_Info.fw }}</small><br>
-                <small><b>PROTOCOL :</b> {{ Hub_Info.protocol }}</small>
-                <br><br>
+    <div class="container mt-5 medium">
 
-                {% if Devices %}
-                    <h1 class="display-4">DEVICES:</h1>
-                    {% for device, commands in Devices.items() %}
-                        {% if loop.index > 1 %}
-                            <br>
-                        {% endif %}
-                        <div class="card">
-                            <div class="card-header">
-                                <b>{{ device }}</b> 
-                                <span class="badge badge-pill badge-danger float-right">{{ commands['commands']|length }}</span>
+        {% if Hub_Info %}
+            <div class="card">
+                <div class="card-header">
+                    <b>{{ Hub_Info.name }}</b>
+                    <br>
+                    <small><b>ID:</b> {{ Hub_Info.id }}</small>
+                </div>
+                <div class="card-body">
+                    <small><b>IP :</b> {{ Hub_Info.ip }}</small><br>
+                    <small><b>FIRMWARE :</b> {{ Hub_Info.fw }}</small><br>
+                    <small><b>PROTOCOL :</b> {{ Hub_Info.protocol }}</small>
+                    <br><br>
+    
+                    {% if Devices %}
+                        <h1 class="display-4">DEVICES:</h1>
+                        {% for device, commands in Devices.items() %}
+                            {% if loop.index > 1 %}
                                 <br>
-                                <small><b>ID:</b> {{ Devices[device]['id'] }}</small>
-                            </div>
-                            <div class="card-body">
-                                {% for command in commands['commands'] %}
-                                    <a href="javascript:send_command('{{ Devices[device]['id'] }}', '{{ command }}');" class="badge badge-light font-weight-light">{{ command }}</a>
-                                {% endfor %}
-                            </div>
-                        </div> 
-                    {% endfor %}
-                {% endif %}
+                            {% endif %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <b>{{ device }}</b> 
+                                    <span class="badge badge-pill badge-danger float-right">{{ commands['commands']|length }}</span>
+                                    <br>
+                                    <small><b>ID:</b> {{ Devices[device]['id'] }}</small>
+                                </div>
+                                <div class="card-body">
+                                    {% for command in commands['commands'] %}
+                                        <a href="javascript:send_command('{{ Devices[device]['id'] }}', '{{ command }}');" class="badge badge-light font-weight-light">{{ command }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div> 
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    
+        <br>
+    
+    </div>
 
-    <br>
+    <script>
+        {% include 'script.js' %}
+    </script>
 
-</div>
+</body>
 
-{% endblock %}
+</html>

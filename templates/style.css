@@ -1,0 +1,42 @@
+#notification {
+    position: fixed;
+    z-index: 9999;
+    width: 280px;
+    padding-left: 10px;
+}
+
+.message_in {
+    animation-duration:0.5s;
+    animation-name: slidein;
+}
+
+.message_out {
+    animation-duration:0.5s;
+    animation-name: slideout;
+}
+
+.animate_background {
+    transition: background-color 1500ms linear;
+}
+
+@keyframes slidein {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+  }
+
+  @keyframes slideout {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+  }
